@@ -1,0 +1,18 @@
+.empty-element {
+    min-width: 250px;
+    min-height: 100px;
+    background-color: #66666a;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.empty-element i {
+    font-size: 4rem;
+}
+
+.empty-element:hover i {
+    font-size: 4.2rem;
+}

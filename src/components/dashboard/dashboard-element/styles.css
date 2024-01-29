@@ -1,0 +1,14 @@
+.dashboard-element {
+    min-width: 250px;
+    min-height: 100px;
+    background-color: #0B7189;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.element-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100% - 1rem);
+}

@@ -1,0 +1,22 @@
+.dashboard-navbar {
+    background-color: #081320;
+    height: 2rem;
+    margin: 1rem 1rem 0 1rem;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 .25rem 0 .25rem;
+}
+
+.dashboard-btn {
+    height: 1.5rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-btn i {
+    margin-right: 5px;
+}

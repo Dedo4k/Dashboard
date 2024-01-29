@@ -1,0 +1,24 @@
+.element-controls {
+    background-color: #9C95DC;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 0 5px 0 5px;
+}
+
+.control-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    width: .9rem;
+    height: .9rem;
+    border: none;
+    border-radius: 50%;
+}
+
+.control-btn i {
+    display: flex;
+    font-size: 10px;
+}
