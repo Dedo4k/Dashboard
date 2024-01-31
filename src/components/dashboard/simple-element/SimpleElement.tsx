@@ -2,35 +2,39 @@ import React from "react";
 import "./styles.css";
 import ElementControls from "./element-controls";
 
-type DashboardElementProps = {
-    children: React.ReactNode,
+export type SimpleElementProps = {
     fullscreen?: boolean;
     settings?: boolean;
-    onClose?: () => void;
 }
 
-type DashboardElementState = {
+export type SimpleElementState = {}
 
-}
+class SimpleElement<P extends SimpleElementProps, S> extends React.Component<P, S> {
 
-class DashboardElement extends React.Component<DashboardElementProps, DashboardElementState> {
-
-    constructor(props: DashboardElementProps) {
+    constructor(props: P) {
         super(props);
     }
 
+    onClose(): void {
+    };
+
+    content(): React.ReactNode {
+        return null;
+    };
+
     render() {
-        const {fullscreen, settings, onClose} = this.props;
+        const {fullscreen, settings} = this.props;
+        const {onClose} = this;
 
         return <>
             <div className={"dashboard-element"}>
                 <ElementControls fullscreen={!!fullscreen} settings={!!settings} onClose={onClose}/>
                 <div className={"element-content"}>
-                    {this.props.children}
+                    {this.content()}
                 </div>
             </div>
         </>;
     }
 }
 
-export default DashboardElement;
+export default SimpleElement;

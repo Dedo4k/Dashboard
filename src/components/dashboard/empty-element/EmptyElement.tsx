@@ -24,12 +24,6 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
         }));
     }
 
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-    }
-
     showModal = () => {
         this.setShowModal(true);
     }
