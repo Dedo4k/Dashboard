@@ -1,8 +1,21 @@
 import React from "react";
 import "./styles.css";
-import {Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle} from "react-bootstrap";
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardTitle,
+    Modal,
+    ModalBody,
+    ModalHeader,
+    ModalTitle
+} from "react-bootstrap";
+import {ElementDescription, elements} from "../dashboard-elements";
 
-type EmptyElementProps = {}
+type EmptyElementProps = {
+    onSelect: (elementDescription: ElementDescription) => void;
+}
 
 type EmptyElementState = {
     showModal: boolean;
@@ -17,17 +30,11 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
         }
     }
 
-    setShowModal(value: boolean) {
+    setShowModal = (value: boolean) => {
         this.setState((state) => ({
             ...state,
             showModal: value
         }));
-    }
-
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
     }
 
     showModal = () => {
@@ -38,8 +45,16 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
         this.setShowModal(false);
     }
 
+    onSelect = (element: ElementDescription) => {
+        const {onSelect} = this.props;
+
+        onSelect(element);
+        this.hideModal();
+    }
+
     render() {
         const {showModal} = this.state;
+        const {onSelect} = this;
 
         return <>
             <div className={"empty-element"} onClick={this.showModal}>
@@ -47,14 +62,20 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
             </div>
             <Modal show={showModal} onHide={this.hideModal} backdrop centered keyboard>
                 <ModalHeader closeButton>
-                    <ModalTitle>Title</ModalTitle>
+                    <ModalTitle>Select element to add on dashboard</ModalTitle>
                 </ModalHeader>
                 <ModalBody>
-                    Content
+                    {
+                        elements.map((el, index) =>
+                            <Card key={index}>
+                                <CardTitle>{el.title}</CardTitle>
+                                <CardBody>{el.description}</CardBody>
+                                <CardFooter>
+                                    <Button onClick={() => onSelect(el)}>Add</Button>
+                                </CardFooter>
+                            </Card>)
+                    }
                 </ModalBody>
-                <ModalFooter>
-                    Actions
-                </ModalFooter>
             </Modal>
         </>;
     }

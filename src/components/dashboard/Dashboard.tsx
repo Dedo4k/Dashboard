@@ -1,47 +1,60 @@
-import React from "react";
+import React, {Fragment} from "react";
 import "./styles.css";
-import DashboardElement from "./dashboard-element";
+import SimpleElement, {SimpleElementProps, SimpleElementState} from "./simple-element";
 import DashboardNavbar from "./dashboard-navbar";
 import EmptyElement from "./empty-element";
+import {ElementDescription} from "./dashboard-elements";
 
-type DashboardProps = {
-
-}
+type DashboardProps = {}
 
 type DashboardState = {
-
+    elements: SimpleElement<SimpleElementProps, SimpleElementState>[]
 }
 
 class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
     constructor(props: DashboardProps) {
         super(props);
+        this.state = {
+            elements: []
+        };
+    }
+
+    setElements = (elements: SimpleElement<SimpleElementProps, SimpleElementState>[]) => {
+        this.setState((state) => ({
+            ...state,
+            elements: elements
+        }));
+    }
+
+    addElement = (elementDescription: ElementDescription) => {
+        const {elements} = this.state;
+
+        this.setElements(elements.concat(new elementDescription.elementType({
+            value: "aads",
+            settings: true,
+            dashboard: this
+        })));
+    }
+
+    removeElement = (element: SimpleElement<SimpleElementProps, SimpleElementState>) => {
+        const {elements} = this.state;
+
+        this.setElements(elements.filter(el => el !== element));
     }
 
     render() {
+        const {elements} = this.state;
+        const {addElement} = this;
+
         return <>
             <div className={"dashboard-container"}>
                 <DashboardNavbar/>
                 <div className={"dashboard"}>
-                    <DashboardElement settings={true} fullscreen={true} onClose={() => console.log("1")}>
-                        <p>1</p>
-                    </DashboardElement>
-                    <DashboardElement settings={true} onClose={() => console.log("2")}>
-                        <p>2</p>
-                    </DashboardElement>
-                    <DashboardElement fullscreen={true} onClose={() => console.log("3")}>
-                        <p>3</p>
-                    </DashboardElement>
-                    <DashboardElement onClose={() => console.log("4")}>
-                        <p>4</p>
-                    </DashboardElement>
-                    <DashboardElement settings={true} fullscreen={true}>
-                        <p>5</p>
-                    </DashboardElement>
-                    <DashboardElement fullscreen={true}>
-                        <p>6</p>
-                    </DashboardElement>
-                    <EmptyElement/>
+                    {
+                        elements.map((el, index) => <Fragment key={index}>{el.render()}</Fragment>)
+                    }
+                    <EmptyElement onSelect={addElement}/>
                 </div>
             </div>
         </>;
