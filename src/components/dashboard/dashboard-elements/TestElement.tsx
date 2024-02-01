@@ -2,11 +2,11 @@ import SimpleElement, {SimpleElementProps, SimpleElementState} from "../simple-e
 import React from "react";
 
 
-type TestElementProps = SimpleElementProps & {
+export type TestElementProps = SimpleElementProps & {
     value: string
 }
 
-type TestElementState = SimpleElementState & {
+export type TestElementState = SimpleElementState & {
     value: string
 }
 
@@ -16,9 +16,9 @@ class TestElement extends SimpleElement<TestElementProps, TestElementState> {
         super(props);
     }
 
-    content(): React.ReactNode {
+    content = (): React.ReactNode => {
         return <p>{this.props.value}</p>;
-    }
+    };
 }
 
 export default TestElement;

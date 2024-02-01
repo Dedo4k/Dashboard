@@ -7,7 +7,9 @@ class App extends React.Component<any, any> {
     render() {
         return (
             <div className="App">
-                <Dashboard></Dashboard>
+                <div className={"dashboard-view"}>
+                    <Dashboard></Dashboard>
+                </div>
             </div>
         );
     }

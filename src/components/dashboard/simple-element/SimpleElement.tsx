@@ -1,8 +1,11 @@
 import React from "react";
 import "./styles.css";
 import ElementControls from "./element-controls";
+import Dashboard from "../Dashboard";
 
 export type SimpleElementProps = {
+    dashboard: Dashboard;
+    onClose?: () => void;
     fullscreen?: boolean;
     settings?: boolean;
 }
@@ -15,10 +18,14 @@ class SimpleElement<P extends SimpleElementProps, S> extends React.Component<P, 
         super(props);
     }
 
-    onClose(): void {
+    onClose = (): void => {
+        const {dashboard} = this.props;
+
+        this.props.onClose && this.props.onClose();
+        dashboard.removeElement(this);
     };
 
-    content(): React.ReactNode {
+    content = (): React.ReactNode => {
         return null;
     };
 

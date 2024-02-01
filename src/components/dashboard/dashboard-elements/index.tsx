@@ -1,3 +1,6 @@
-import TestElement from "./TestElement";
+import TestElement, {TestElementProps, TestElementState} from "./TestElement";
+import elements from "./Elements";
+import ElementDescription from "./ElementDescription";
 
-export default TestElement;
+export {elements, TestElement, ElementDescription};
+export type {TestElementProps, TestElementState};
