@@ -27,14 +27,11 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         }));
     }
 
-    addElement = (elementDescription: ElementDescription) => {
+    addElement = (elementDescription: ElementDescription, config: any) => {
         const {elements} = this.state;
+        config.dashboard = this;
 
-        this.setElements(elements.concat(new elementDescription.elementType({
-            value: "aads",
-            settings: true,
-            dashboard: this
-        })));
+        this.setElements(elements.concat(new (elementDescription.elementType as any)(config)));
     }
 
     removeElement = (element: SimpleElement<SimpleElementProps, SimpleElementState>) => {
@@ -54,7 +51,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
                     {
                         elements.map((el, index) => <Fragment key={index}>{el.render()}</Fragment>)
                     }
-                    <EmptyElement onSelect={addElement}/>
+                    <EmptyElement onAdd={addElement}/>
                 </div>
             </div>
         </>;

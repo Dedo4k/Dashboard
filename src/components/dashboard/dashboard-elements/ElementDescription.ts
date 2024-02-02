@@ -1,5 +1,7 @@
+import SimpleElement, {SimpleElementProps, SimpleElementState} from "../simple-element";
+
 class ElementDescription {
-    private _elementType: any;
+    private _elementType: (props: SimpleElementProps) => SimpleElement<SimpleElementProps, SimpleElementState>;
     private _title: string;
     private _description: string;
 
@@ -9,11 +11,11 @@ class ElementDescription {
         this._description = description;
     }
 
-    get elementType(): any {
+    get elementType(): (props: SimpleElementProps) => SimpleElement<SimpleElementProps, SimpleElementState> {
         return this._elementType;
     }
 
-    set elementType(value: any) {
+    set elementType(value: (props: SimpleElementProps) => SimpleElement<SimpleElementProps, SimpleElementState>) {
         this._elementType = value;
     }
 

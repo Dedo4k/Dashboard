@@ -19,6 +19,13 @@ class TestElement extends SimpleElement<TestElementProps, TestElementState> {
     content = (): React.ReactNode => {
         return <p>{this.props.value}</p>;
     };
+
+    static getConfig = () => {
+        return {
+            ...SimpleElement.getConfig(),
+            value: ""
+        } as TestElementProps;
+    }
 }
 
 export default TestElement;
