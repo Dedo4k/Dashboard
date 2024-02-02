@@ -29,6 +29,10 @@ class SimpleElement<P extends SimpleElementProps, S> extends React.Component<P, 
         return null;
     };
 
+    static getConfig = () => {
+        return {fullscreen: false, settings: false} as SimpleElementProps;
+    }
+
     render() {
         const {fullscreen, settings} = this.props;
         const {onClose} = this;
