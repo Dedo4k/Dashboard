@@ -1,6 +1,7 @@
-import React from 'react';
 import './App.css';
-import Dashboard from "./components/dashboard";
+
+import React from 'react';
+import {Dashboard} from "./components/dashboard";
 
 class App extends React.Component<any, any> {
 

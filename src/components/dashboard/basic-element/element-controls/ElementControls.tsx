@@ -1,11 +1,15 @@
-import React from "react";
 import "./styles.css";
+
+import React from "react";
 import {Button} from "react-bootstrap";
+import BasicElement from "../BasicElement";
 
 type ElementControlsProps = {
-    fullscreen: boolean;
-    settings: boolean;
-    onClose?: () => void;
+    element: BasicElement,
+    fullscreen: boolean,
+    settings: boolean,
+    onClose: () => void,
+    toggleFullscreen: () => void,
 }
 
 type ElementControlsState = {}
@@ -17,7 +21,7 @@ class ElementControls extends React.Component<ElementControlsProps, ElementContr
     }
 
     render() {
-        const {onClose, settings, fullscreen} = this.props;
+        const {element, onClose, settings, fullscreen, toggleFullscreen} = this.props;
 
         return <>
             <div className={"element-controls"}>
@@ -27,8 +31,13 @@ class ElementControls extends React.Component<ElementControlsProps, ElementContr
                     </Button>
                 }
                 {fullscreen &&
-                    <Button variant={"outline-dark"} size={"sm"} className={"control-btn"}>
-                        <i className={"bi bi-window-fullscreen"}></i>
+                    <Button variant={"outline-dark"} size={"sm"} className={"control-btn"} onClick={toggleFullscreen}>
+                        {
+                            !element.state.fullscreen ?
+                                <i className={"bi bi-window-fullscreen"}></i>
+                                :
+                                <i className={"bi bi-dash-lg"}></i>
+                        }
                     </Button>
                 }
                 <Button variant={"outline-dark"} size={"sm"} className={"control-btn"} onClick={onClose}>
