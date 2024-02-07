@@ -2,10 +2,10 @@ import "./styles.css";
 
 import React from "react";
 import {Button} from "react-bootstrap";
-import BasicElement from "../BasicElement";
+import BasicElement, {BasicElementProps, BasicElementState} from "../BasicElement";
 
-type ElementControlsProps = {
-    element: BasicElement,
+type ElementControlsProps<T> = {
+    element: T,
     fullscreen: boolean,
     settings: boolean,
     onClose: () => void,
@@ -14,9 +14,9 @@ type ElementControlsProps = {
 
 type ElementControlsState = {}
 
-class ElementControls extends React.Component<ElementControlsProps, ElementControlsState> {
+class ElementControls<T extends BasicElement<BasicElementProps, BasicElementState>> extends React.Component<ElementControlsProps<T>, ElementControlsState> {
 
-    constructor(props: ElementControlsProps) {
+    constructor(props: ElementControlsProps<T>) {
         super(props);
     }
 
