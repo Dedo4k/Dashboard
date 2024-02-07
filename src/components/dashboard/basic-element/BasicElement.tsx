@@ -16,14 +16,14 @@ export type BasicElementState = {
     fullscreen: boolean
 }
 
-class BasicElement extends React.Component<BasicElementProps, BasicElementState> {
+class BasicElement<P extends BasicElementProps, S extends BasicElementState> extends React.Component<P, S> {
 
-    constructor(props: BasicElementProps) {
+    constructor(props: P) {
         super(props);
 
         this.state = {
             fullscreen: false
-        };
+        } as S;
 
         this.onClose = this.onClose.bind(this);
         this.renderContent = this.renderContent.bind(this);

@@ -126,7 +126,7 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
                 <ModalBody>
                     {
                         elements.map((el, index) =>
-                            <Card key={index}>
+                            <Card key={index} className={"mb-2"}>
                                 <CardHeader>
                                     <CardTitle>{el.title}</CardTitle>
                                 </CardHeader>
