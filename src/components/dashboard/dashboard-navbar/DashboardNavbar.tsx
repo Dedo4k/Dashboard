@@ -1,14 +1,11 @@
-import React from "react";
 import "./styles.css";
+
+import React, {Fragment} from "react";
 import {Button} from "react-bootstrap";
 
-type DashboardNavbarProps = {
+export type DashboardNavbarProps = {}
 
-}
-
-type DashboardNavbarState = {
-
-}
+export type DashboardNavbarState = {}
 
 class DashboardNavbar extends React.Component<DashboardNavbarProps, DashboardNavbarState> {
 
@@ -17,14 +14,14 @@ class DashboardNavbar extends React.Component<DashboardNavbarProps, DashboardNav
     }
 
     render() {
-        return <>
+        return <Fragment>
             <div className={"dashboard-navbar"}>
                 <Button variant={"dark"} size={"sm"} className={"dashboard-btn"}>
                     <i className={"bi bi-gear"}></i>
                     <span>Options</span>
                 </Button>
             </div>
-        </>;
+        </Fragment>;
     }
 }
 

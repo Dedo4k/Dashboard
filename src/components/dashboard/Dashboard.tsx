@@ -1,17 +1,17 @@
-import React, {Fragment} from "react";
 import "./styles.css";
-import SimpleElement, {SimpleElementProps, SimpleElementState} from "./simple-element";
-import DashboardNavbar from "./dashboard-navbar";
-import EmptyElement from "./empty-element";
-import {ElementDescription} from "./dashboard-elements";
 
-type DashboardProps = {}
+import React, {Fragment} from "react";
+import {DashboardNavbar} from "./dashboard-navbar";
+import {EmptyElement} from "./empty-element";
 
-type DashboardState = {
-    elements: SimpleElement<SimpleElementProps, SimpleElementState>[]
+export type DashboardProps = {}
+
+export type DashboardState = {
+    elements: React.ReactElement[]
 }
 
 class Dashboard extends React.Component<DashboardProps, DashboardState> {
+
 
     constructor(props: DashboardProps) {
         super(props);
@@ -20,41 +20,39 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         };
     }
 
-    setElements = (elements: SimpleElement<SimpleElementProps, SimpleElementState>[]) => {
+    setElements(elements: React.ReactElement[]) {
         this.setState((state) => ({
             ...state,
             elements: elements
         }));
     }
 
-    addElement = (elementDescription: ElementDescription, config: any) => {
+    addElement(element: React.ReactElement) {
         const {elements} = this.state;
-        config.dashboard = this;
 
-        this.setElements(elements.concat(new (elementDescription.elementType as any)(config)));
+        this.setElements(elements.concat(element))
     }
 
-    removeElement = (element: SimpleElement<SimpleElementProps, SimpleElementState>) => {
+    removeElement(uniqueKey: string) {
         const {elements} = this.state;
 
-        this.setElements(elements.filter(el => el !== element));
+        this.setElements(elements.filter((el) => el.props.uniqueKey != uniqueKey));
     }
 
     render() {
         const {elements} = this.state;
-        const {addElement} = this;
 
-        return <>
+        return <Fragment>
             <div className={"dashboard-container"}>
                 <DashboardNavbar/>
                 <div className={"dashboard"}>
                     {
-                        elements.map((el, index) => <Fragment key={index}>{el.render()}</Fragment>)
+                        elements.map((el, index) => <Fragment key={index}>{el}</Fragment>)
                     }
-                    <EmptyElement onAdd={addElement}/>
+                    <EmptyElement dashboard={this}/>
                 </div>
             </div>
-        </>;
+        </Fragment>;
     }
 }
 

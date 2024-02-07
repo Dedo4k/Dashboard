@@ -22,3 +22,24 @@
     display: flex;
     font-size: 10px;
 }
+
+.fullscreen-element {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.fullscreen-element .element-controls {
+    height: 2rem;
+}
+
+.fullscreen-element .control-btn {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
+.fullscreen-element .control-btn i {
+    font-size: 14px;
+}

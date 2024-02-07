@@ -1,3 +1,3 @@
 import DashboardNavbar from "./DashboardNavbar";
 
-export default DashboardNavbar;
+export {DashboardNavbar};

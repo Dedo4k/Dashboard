@@ -1,5 +1,6 @@
-import React from "react";
 import "./styles.css";
+
+import React from "react";
 import {
     Button,
     Card,
@@ -8,30 +9,28 @@ import {
     CardHeader,
     CardTitle,
     Form,
-    FormCheck,
-    FormControl,
-    InputGroup,
     Modal,
     ModalBody,
     ModalFooter,
     ModalHeader,
     ModalTitle
 } from "react-bootstrap";
-import {ElementDescription, elements} from "../dashboard-elements";
-import InputGroupText from "react-bootstrap/InputGroupText";
+import elements from "../elements/Elements";
+import {ElementInfo} from "../elements";
+import {BasicConfig} from "../basic-element";
+import Dashboard from "../Dashboard";
+import {BasicElementProps} from "../basic-element/BasicElement";
+import {v4 as uuidv4} from 'uuid';
 
 type EmptyElementProps = {
-    onSelect?: (elementDescription: ElementDescription) => void;
-    onAdd: (elementDescription: ElementDescription, config: object) => void;
+    dashboard: Dashboard,
 }
 
 type EmptyElementState = {
     newElementModal: boolean;
     configurationModal: boolean;
-    selected: {
-        config: any | undefined,
-        description: ElementDescription | undefined
-    };
+    config?: BasicConfig;
+    elementInfo?: ElementInfo;
 }
 
 class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState> {
@@ -40,11 +39,7 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
         super(props);
         this.state = {
             newElementModal: false,
-            configurationModal: false,
-            selected: {
-                config: undefined,
-                description: undefined
-            }
+            configurationModal: false
         }
     }
 
@@ -62,23 +57,17 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
         }));
     }
 
-    setSelectedConfig = (config: any) => {
+    setConfig = (config: BasicConfig) => {
         this.setState((state) => ({
             ...state,
-            selected: {
-                ...state.selected,
-                config: config
-            }
+            config: config
         }));
     }
 
-    setSelectedDescription = (elementDescription: ElementDescription) => {
+    setElementInfo = (elementInfo: ElementInfo) => {
         this.setState((state) => ({
             ...state,
-            selected: {
-                ...state.selected,
-                description: elementDescription
-            }
+            elementInfo: elementInfo
         }));
     }
 
@@ -86,11 +75,7 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
         this.setNewElementModal(true);
     }
 
-    showConfigurationModal = (elementDescription: ElementDescription) => {
-        const elementConfig = (elementDescription.elementType as any).getConfig();
-
-        this.setSelectedConfig(elementConfig);
-        this.setSelectedDescription(elementDescription);
+    showConfigurationModal = () => {
         this.setConfigurationModal(true);
     }
 
@@ -102,24 +87,33 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
         this.setConfigurationModal(false);
     }
 
-    onSelect = (elementDescription: ElementDescription) => {
-        this.props.onSelect && this.props.onSelect(elementDescription);
+    onSelect = (elementInfo: ElementInfo) => {
+        const config = new elementInfo.config();
+        this.setConfig(config);
+        this.setElementInfo(elementInfo);
 
         this.hideNewElementModal();
-        this.showConfigurationModal(elementDescription);
+        this.showConfigurationModal();
     }
 
     onAdd = () => {
-        const {onAdd} = this.props;
-        const {selected} = this.state;
+        const {dashboard} = this.props;
 
-        selected.description && selected.config && onAdd(selected.description, selected.config);
-        this.hideConfigurationModal();
+        const config = this.state.config;
+        if (config?.type) {
+            let props = {
+                ...config.toProps(),
+                dashboard: dashboard,
+                uniqueKey: uuidv4()
+            } as BasicElementProps;
+            dashboard.addElement(React.createElement(config?.type, props))
+            this.hideConfigurationModal();
+        }
     }
 
     render() {
-        const {newElementModal, configurationModal, selected} = this.state;
-        const {onSelect, onAdd, showNewElementModal, hideNewElementModal, hideConfigurationModal} = this;
+        const {newElementModal, configurationModal} = this.state;
+        const {onSelect, onAdd, showNewElementModal, hideNewElementModal, hideConfigurationModal, setConfig} = this;
 
         return <>
             <div className={"empty-element"} onClick={showNewElementModal}>
@@ -146,19 +140,13 @@ class EmptyElement extends React.Component<EmptyElementProps, EmptyElementState>
             </Modal>
             <Modal show={configurationModal} onHide={hideConfigurationModal} backdrop centered keyboard>
                 <ModalHeader closeButton>
-                    <ModalTitle>"{selected?.description?.title}" configuration</ModalTitle>
+                    <ModalTitle>{this.state.elementInfo?.title} configuration</ModalTitle>
                 </ModalHeader>
                 <ModalBody>
                     <Form>
-                        <FormCheck type={"switch"} label={"Is configurable"} value={selected?.config?.settings}
-                                   onClick={() => selected.config.settings = !selected.config.settings}/>
-                        <FormCheck type={"switch"} label={"Is fullscreen"} value={selected?.config?.fullscreen}
-                                   onClick={() => selected.config.fullscreen = !selected.config.fullscreen}/>
-                        <InputGroup>
-                            <InputGroupText>Value</InputGroupText>
-                            <FormControl aria-label={"Value"}
-                                         onChange={(event) => selected.config.value = event.currentTarget.value}/>
-                        </InputGroup>
+                        {
+                            this.state.config && this.state.config.renderConfig(setConfig)
+                        }
                     </Form>
                 </ModalBody>
                 <ModalFooter>
