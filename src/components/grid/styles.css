@@ -1,0 +1,52 @@
+.grid {
+    display: grid;
+}
+
+.grid-element {
+    position: relative;
+}
+
+.grid-element-content {
+    width: 100%;
+    height: 100%;
+    padding: .5rem;
+    overflow: auto;
+}
+
+.grid-element-content > * {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+}
+
+.top-resizer {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 3px;
+    cursor: ns-resize;
+}
+
+.right-resizer {
+    position: absolute;
+    right: 0;
+    width: 3px;
+    height: 100%;
+    cursor: ew-resize;
+}
+
+.bottom-resizer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    cursor: ns-resize;
+}
+
+.left-resizer {
+    position: absolute;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    cursor: ew-resize;
+}
