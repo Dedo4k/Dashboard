@@ -3,6 +3,7 @@ import "./styles.css";
 import React, {Fragment} from "react";
 import Grid from "./Grid";
 import ResizeHandler from "./ResizeHandler";
+import Resizer from "./Resizer";
 
 export type GridElementProps = {
     row: number;
@@ -11,7 +12,6 @@ export type GridElementProps = {
     height: number;
     children?: React.ReactNode;
     color?: string;
-    setResize?: (x: number, y: number, value: boolean) => void;
     grid?: Grid;
     resizeHandler?: ResizeHandler;
 }
@@ -84,43 +84,11 @@ class GridElement extends React.Component<GridElementProps, GridElementState> {
         if (!this.state.startX || !this.state.startY) {
             return;
         }
-        const dx = clientX - this.state.startX;
-        const dy = clientY - this.state.startY;
-        const cellSize = this.props.grid?.props.cellSize!!;
-        let dCol: number;
-        const a = Math.trunc(dx / cellSize);
-        const da = dx - a * cellSize;
-        if (dx > 0) {
-            if (da >= cellSize / 2) {
-                dCol = a + 1;
-            } else {
-                dCol = a;
-            }
-        } else {
-            if (Math.abs(da) >= cellSize / 2) {
-                dCol = a - 1;
-            } else {
-                dCol = a;
-            }
-        }
-        let dRow: number;
-        const b = Math.trunc(dy / cellSize);
-        const db = dy - b * cellSize;
-        if (dy > 0) {
-            if (db >= cellSize / 2) {
-                dRow = b + 1;
-            } else {
-                dRow = b;
-            }
-        } else {
-            if (Math.abs(db) >= cellSize / 2) {
-                dRow = b - 1;
-            } else {
-                dRow = b;
-            }
-        }
-        const newCol = this.state.col + dCol;
-        const newRow = this.state.row + dRow;
+        const dCol = this.props.grid!!.cellDifference(this.state.startX, clientX);
+        const dRow = this.props.grid!!.cellDifference(this.state.startY, clientY);
+
+        const newCol = this.state.col - dCol;
+        const newRow = this.state.row - dRow;
 
         if (!this.validateCords(newRow, newCol, this.state.width, this.state.height)) {
             this.setStartCords(undefined, undefined);
@@ -163,15 +131,13 @@ class GridElement extends React.Component<GridElementProps, GridElementState> {
 
         return <Fragment>
             <div className={"grid-element"} style={style}>
-                <div className={"top-resizer"}
-                     onMouseDown={(e) => this.handleResizeStartEvent(e, "top")}></div>
-                <div className={"right-resizer"} onMouseDown={(e) => this.handleResizeStartEvent(e, "right")}></div>
-                <div className={"bottom-resizer"} onMouseDown={(e) => this.handleResizeStartEvent(e, "bottom")}></div>
-                <div className={"left-resizer"} onMouseDown={(e) => this.handleResizeStartEvent(e, "left")}></div>
+                <Resizer direction={"top"} handleResizeStartEvent={this.handleResizeStartEvent}/>
+                <Resizer direction={"right"} handleResizeStartEvent={this.handleResizeStartEvent}/>
+                <Resizer direction={"bottom"} handleResizeStartEvent={this.handleResizeStartEvent}/>
+                <Resizer direction={"left"} handleResizeStartEvent={this.handleResizeStartEvent}/>
                 <div ref={this.ref} className={"grid-element-content"} draggable={true}
                      onDragStart={this.handleDragStartEvent}
                      onDragEnd={this.handleDragEndEvent}>
-                    {this.state.row}/{this.state.col}/{this.state.width}/{this.state.height}
                     {this.props.children}
                 </div>
             </div>

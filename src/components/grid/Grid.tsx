@@ -12,8 +12,6 @@ export type GridProps = React.HTMLAttributes<HTMLDivElement> & {
 }
 
 export type GridState = {
-    clientX: number;
-    clientY: number;
     isResizing: boolean;
     resizeX?: number;
     resizeY?: number;
@@ -31,18 +29,8 @@ class Grid extends React.Component<GridProps, GridState> {
         this.resizeHandler = new ResizeHandler(this);
 
         this.state = {
-            clientX: 0,
-            clientY: 0,
             isResizing: false
         };
-    }
-
-    setCords = (x: number, y: number) => {
-        this.setState((state) => ({
-            ...state,
-            clientX: x,
-            clientY: y
-        }));
     }
 
     setResizing = (x: number | undefined, y: number | undefined, value: boolean) => {
@@ -54,29 +42,48 @@ class Grid extends React.Component<GridProps, GridState> {
         }));
     }
 
-    handleMouseMoveEvent = (e: React.MouseEvent) => {
-        this.setCords(e.clientX, e.clientY);
-    }
-
     handleMouseUpEvent = (e: React.MouseEvent) => {
         if (this.resizeHandler.resizingObject) {
             this.resizeHandler.endResize(e.clientX, e.clientY);
         }
     }
 
+    cellDifference = (start: number, end: number): number => {
+        const {cellSize} = this.props;
+
+        const diff = start - end;
+        let dCell: number;
+        const a = Math.trunc(diff / cellSize);
+        const da = diff - a * cellSize;
+        if (diff > 0) {
+            if (da >= cellSize / 2) {
+                dCell = a + 1;
+            } else {
+                dCell = a;
+            }
+        } else {
+            if (Math.abs(da) >= cellSize / 2) {
+                dCell = a - 1;
+            } else {
+                dCell = a;
+            }
+        }
+
+        return dCell;
+    }
+
     render() {
         const style = {
             ...this.props.style,
             backgroundColor: this.props.color,
-            width: this.props.cols * this.props.cellSize + 6 * (this.props.cols - 1),
-            height: this.props.rows * this.props.cellSize + 6 * (this.props.rows - 1),
+            width: this.props.cols * this.props.cellSize,
+            height: this.props.rows * this.props.cellSize,
             gridTemplateColumns: `repeat(${this.props.cols}, ${this.props.cellSize}px)`,
             gridTemplateRows: `repeat(${this.props.rows}, ${this.props.cellSize}px)`
         }
 
         return <Fragment>
-            <div>ClientX: {this.state.clientX} ClientY: {this.state.clientY}</div>
-            <div ref={this.ref} className={"grid"} style={style} onMouseMove={this.handleMouseMoveEvent}
+            <div ref={this.ref} className={"grid"} style={style}
                  onMouseUp={this.handleMouseUpEvent}>
                 {
                     React.Children.map(this.props.children, (ch) => {
