@@ -41,19 +41,83 @@ class ResizeHandler {
                     dRow = b;
                 }
             }
-            const newRow = this.resizingObject?.state.row!! + dRow;
+            if (this.direction === "top") {
+                const newRow = this.resizingObject?.state.row!! + dRow;
 
-            if (!this.resizingObject?.validateCords(newRow, this.resizingObject?.state.col)) {
-                this.resetResizer();
-                return;
+                if (!this.resizingObject?.validateCords(newRow,
+                    this.resizingObject?.state.col,
+                    this.resizingObject?.state.width,
+                    this.resizingObject?.state.height - dRow)) {
+                    this.resetResizer();
+                    return;
+                }
+
+                this.resizingObject?.setResizedPosition(newRow,
+                    this.resizingObject?.state.col,
+                    this.resizingObject?.state.width,
+                    this.resizingObject?.state.height - dRow);
+            } else {
+                if (!this.resizingObject?.validateCords(this.resizingObject?.state.row,
+                    this.resizingObject?.state.col,
+                    this.resizingObject?.state.width,
+                    this.resizingObject?.state.height + dRow)) {
+                    this.resetResizer();
+                    return;
+                }
+
+                this.resizingObject?.setResizedPosition(this.resizingObject?.state.row,
+                    this.resizingObject?.state.col,
+                    this.resizingObject?.state.width,
+                    this.resizingObject?.state.height + dRow);
             }
-
-            this.resizingObject?.setResizedPosition(newRow,
-                this.resizingObject?.state.col,
-                this.resizingObject?.state.width,
-                this.resizingObject?.state.height + -dRow);
         } else if (this.direction === "left" || this.direction === "right") {
+            const dx = x - this.resizeStartX!!;
 
+            let dCol: number;
+            const b = Math.trunc(dx / cellSize);
+            const db = dx - b * cellSize;
+            if (dx > 0) {
+                if (db >= cellSize / 2) {
+                    dCol = b + 1;
+                } else {
+                    dCol = b;
+                }
+            } else {
+                if (Math.abs(db) >= cellSize / 2) {
+                    dCol = b - 1;
+                } else {
+                    dCol = b;
+                }
+            }
+            if (this.direction === "right") {
+                if (!this.resizingObject?.validateCords(this.resizingObject?.state.row,
+                    this.resizingObject?.state.col,
+                    this.resizingObject?.state.width + dCol,
+                    this.resizingObject?.state.height)) {
+                    this.resetResizer();
+                    return;
+                }
+
+                this.resizingObject?.setResizedPosition(this.resizingObject?.state.row,
+                    this.resizingObject?.state.col,
+                    this.resizingObject?.state.width + dCol,
+                    this.resizingObject?.state.height);
+            } else {
+                const newCol = this.resizingObject?.state.col!! + dCol;
+
+                if (!this.resizingObject?.validateCords(this.resizingObject?.state.row,
+                    newCol,
+                    this.resizingObject?.state.width - dCol,
+                    this.resizingObject?.state.height)) {
+                    this.resetResizer();
+                    return;
+                }
+
+                this.resizingObject?.setResizedPosition(this.resizingObject?.state.row,
+                    newCol,
+                    this.resizingObject?.state.width - dCol,
+                    this.resizingObject?.state.height);
+            }
         }
 
         this.resetResizer();

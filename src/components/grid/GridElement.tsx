@@ -122,7 +122,7 @@ class GridElement extends React.Component<GridElementProps, GridElementState> {
         const newCol = this.state.col + dCol;
         const newRow = this.state.row + dRow;
 
-        if (!this.validateCords(newRow, newCol)) {
+        if (!this.validateCords(newRow, newCol, this.state.width, this.state.height)) {
             this.setStartCords(undefined, undefined);
             return;
         }
@@ -130,12 +130,14 @@ class GridElement extends React.Component<GridElementProps, GridElementState> {
         this.setPosition(newRow, newCol);
     }
 
-    validateCords = (row: number, col: number): boolean => {
+    validateCords = (row: number, col: number, width: number, height: number): boolean => {
         const {rows, cols} = this.props.grid!!.props;
         return !(row <= 0 || row > rows!! + 1 ||
             col <= 0 || col > cols!! + 1 ||
-            row + this.state.height > rows!! + 1 ||
-            col + this.state.width > cols!! + 1);
+            row + height > rows!! + 1 ||
+            col + width > cols!! + 1 ||
+            width <= 0 ||
+            height <= 0);
     }
 
     handleResizeStartEvent = (e: React.MouseEvent<HTMLDivElement>, dir: string) => {
