@@ -2,24 +2,23 @@ import {BasicElement} from "../../basic-element";
 import {BasicElementProps, BasicElementState} from "../../basic-element/BasicElement";
 import {Fragment} from "react";
 
-type TestElementProps = BasicElementProps & {
-    value: string
+export type ClockElementProps = BasicElementProps & {
+    timeZone: string
 }
 
-type TestElementState = BasicElementState & {
+type ClockElementState = BasicElementState & {
     date: Date
 }
 
-class TestElement extends BasicElement<TestElementProps, TestElementState> {
+class ClockElement extends BasicElement<ClockElementProps, ClockElementState> {
 
     timeoutId?: NodeJS.Timeout;
 
-
-    constructor(props: TestElementProps) {
+    constructor(props: ClockElementProps) {
         super(props);
         this.state = {
             date: new Date()
-        } as TestElementState;
+        } as ClockElementState;
     }
 
     setDate(date: Date) {
@@ -40,12 +39,12 @@ class TestElement extends BasicElement<TestElementProps, TestElementState> {
     renderContent(): JSX.Element {
         return <Fragment>
             <div>
-                <p>{this.props.value}</p>
+                <p>{this.props.timeZone}</p>
 
-                <p>{this.state.date.toLocaleString()}</p>
+                <p>{this.state.date.toLocaleString(undefined, {timeZone: this.props.timeZone})}</p>
             </div>
         </Fragment>;
     }
 }
 
-export default TestElement;
+export default ClockElement;
