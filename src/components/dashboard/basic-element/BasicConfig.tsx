@@ -1,6 +1,7 @@
 import React, {Fragment} from "react";
 import {FormCheck} from "react-bootstrap";
 import {BasicElement} from "./index";
+import {BasicElementProps} from "./BasicElement";
 
 class BasicConfig {
     readonly type: React.ComponentType<any> = BasicElement;
@@ -33,11 +34,11 @@ class BasicConfig {
         changeConfig(this);
     }
 
-    toProps() {
+    toProps(): BasicElementProps {
         return {
             settings: this.settings,
             fullscreen: this.fullscreen
-        }
+        } as BasicElementProps;
     }
 
     renderConfig(changeConfig: (config: BasicConfig) => void) {

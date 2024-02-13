@@ -3,6 +3,7 @@ import "./styles.css";
 import React, {Fragment} from "react";
 import {DashboardNavbar} from "./dashboard-navbar";
 import {EmptyElement} from "./empty-element";
+import {Grid, GridElement} from "../grid";
 
 export type DashboardProps = {}
 
@@ -42,14 +43,21 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     render() {
         const {elements} = this.state;
 
+        const cells = Math.trunc(window.innerWidth / 10) - 5;
+
         return <Fragment>
             <div className={"dashboard-container"}>
                 <DashboardNavbar/>
                 <div className={"dashboard"}>
-                    {
-                        elements.map((el, index) => <Fragment key={index}>{el}</Fragment>)
-                    }
-                    <EmptyElement dashboard={this}/>
+                    <Grid rows={cells} cols={cells} cellSize={10}>
+                        {
+                            elements.map((el, index) =>
+                                <GridElement row={1} col={1} width={40} height={40} key={index}>{el}</GridElement>)
+                        }
+                        <GridElement row={1} col={1} width={30} height={20}>
+                            <EmptyElement dashboard={this}/>
+                        </GridElement>
+                    </Grid>
                 </div>
             </div>
         </Fragment>;
