@@ -7,6 +7,14 @@ import InputGroupText from "react-bootstrap/InputGroupText";
 class ClockConfig extends BasicConfig {
     readonly type: React.ComponentType<any> = ClockElement;
     private _timeZone = "";
+    private timeZones = [];
+
+    constructor() {
+        super();
+        // @ts-ignore
+        this.timeZones = Intl.supportedValuesOf("timeZone");
+        this._timeZone = this.timeZones.at(0)!!;
+    }
 
     get timeZone(): string {
         return this._timeZone;
@@ -29,9 +37,6 @@ class ClockConfig extends BasicConfig {
     }
 
     renderConfig(changeConfig: (config: BasicConfig) => void): JSX.Element {
-        // @ts-ignore
-        const timeZones: string[] = Intl.supportedValuesOf("timeZone");
-        this._timeZone = timeZones.at(0)!!;
         return <Fragment>
             {super.renderConfig(changeConfig)}
             <InputGroup>
@@ -39,7 +44,7 @@ class ClockConfig extends BasicConfig {
                 <FormSelect aria-label={"Timezone"}
                             onChange={(event) => this.handleValue(event.currentTarget.value, changeConfig)}>
                     {
-                        timeZones.map((tz, index) => <option key={index}>{tz}</option>)
+                        this.timeZones.map((tz, index) => <option key={index}>{tz}</option>)
                     }
                 </FormSelect>
             </InputGroup>

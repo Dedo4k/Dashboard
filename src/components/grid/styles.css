@@ -10,7 +10,10 @@
     position: inherit;
 }
 
-.grid-element:has(.fullscreen-element) .top-resizer, .right-resizer, .bottom-resizer, .left-resizer {
+.grid-element:has(.fullscreen-element) .top-resizer,
+.grid-element:has(.fullscreen-element) .right-resizer,
+.grid-element:has(.fullscreen-element) .bottom-resizer,
+.grid-element:has(.fullscreen-element) .left-resizer {
     display: none;
 }
 
