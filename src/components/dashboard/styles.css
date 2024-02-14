@@ -7,32 +7,21 @@
 }
 
 .dashboard {
-    display: grid;
-    row-gap: 1rem;
-    column-gap: 1rem;
     padding: 1rem;
 }
 
 @container dashboard-container (max-width: 767px) {
-    .dashboard {
-        grid-template-columns: 1fr;
-    }
+
 }
 
 @container dashboard-container (min-width: 768px) and (max-width: 991px) {
-    .dashboard {
-        grid-template-columns: 1fr 1fr;
-    }
+
 }
 
 @container dashboard-container (min-width: 992px) and (max-width: 1199px) {
-    .dashboard {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
+
 }
 
 @container dashboard-container (min-width: 1200px) {
-    .dashboard {
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-    }
+
 }
