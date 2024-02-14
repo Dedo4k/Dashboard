@@ -3,7 +3,15 @@
 }
 
 .grid-element {
+    position: relative;
+}
 
+.grid-element:has(.fullscreen-element) {
+    position: inherit;
+}
+
+.grid-element:has(.fullscreen-element) .top-resizer, .right-resizer, .bottom-resizer, .left-resizer {
+    display: none;
 }
 
 .grid-element-content {
