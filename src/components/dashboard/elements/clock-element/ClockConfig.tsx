@@ -36,12 +36,13 @@ class ClockConfig extends BasicConfig {
         } as ClockElementProps;
     }
 
-    renderConfig(changeConfig: (config: BasicConfig) => void): JSX.Element {
+    renderConfig(changeConfig: (config: BasicConfig) => void, disabled = false): JSX.Element {
         return <Fragment>
-            {super.renderConfig(changeConfig)}
+            {super.renderConfig(changeConfig, disabled)}
             <InputGroup>
                 <InputGroupText>Timezone</InputGroupText>
                 <FormSelect aria-label={"Timezone"}
+                            value={this._timeZone}
                             onChange={(event) => this.handleValue(event.currentTarget.value, changeConfig)}>
                     {
                         this.timeZones.map((tz, index) => <option key={index}>{tz}</option>)
