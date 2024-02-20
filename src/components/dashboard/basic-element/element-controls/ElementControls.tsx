@@ -10,6 +10,7 @@ type ElementControlsProps<T> = {
     settings: boolean,
     onClose: () => void,
     toggleFullscreen: () => void,
+    toggleConfiguration?: () => void;
 }
 
 type ElementControlsState = {}
@@ -21,12 +22,12 @@ class ElementControls<T extends BasicElement<BasicElementProps, BasicElementStat
     }
 
     render() {
-        const {element, onClose, settings, fullscreen, toggleFullscreen} = this.props;
+        const {element, onClose, settings, fullscreen, toggleFullscreen, toggleConfiguration} = this.props;
 
         return <>
             <div className={"element-controls"}>
                 {settings &&
-                    <Button variant={"outline-dark"} size={"sm"} className={"control-btn"}>
+                    <Button variant={"outline-dark"} size={"sm"} className={"control-btn"} onClick={toggleConfiguration}>
                         <i className={"bi bi-gear"}></i>
                     </Button>
                 }

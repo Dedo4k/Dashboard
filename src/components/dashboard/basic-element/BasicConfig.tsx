@@ -41,12 +41,14 @@ class BasicConfig {
         } as BasicElementProps;
     }
 
-    renderConfig(changeConfig: (config: BasicConfig) => void) {
+    renderConfig(changeConfig: (config: BasicConfig) => void, disabled = false) {
         return <Fragment>
-            <FormCheck type={"switch"} label={"Is configurable"} value={this._settings.toString()}
-                       onClick={() => this.handleSettings(changeConfig)}/>
-            <FormCheck type={"switch"} label={"Is fullscreen"} value={this._fullscreen.toString()}
-                       onClick={() => this.handleFullscreen(changeConfig)}/>
+            <FormCheck type={"switch"} label={"Is configurable"} checked={this._settings}
+                       onChange={() => this.handleSettings(changeConfig)}
+                       disabled={disabled}/>
+            <FormCheck type={"switch"} label={"Is fullscreen"} checked={this._fullscreen}
+                       onChange={() => this.handleFullscreen(changeConfig)}
+                       disabled={disabled}/>
         </Fragment>
     }
 }
